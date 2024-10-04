@@ -1,5 +1,5 @@
 const express = require('express');
-const Location = require('../models/Location');
+const Location = require('../model/location');
 const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();

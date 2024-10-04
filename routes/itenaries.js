@@ -1,5 +1,5 @@
 const express = require('express');
-const Itinerary = require('../models/Itinerary');
+const Itinerary = require('../model/Itenary');
 const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();

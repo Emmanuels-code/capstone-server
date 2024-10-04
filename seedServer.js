@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-// Use environment variable for MongoDB connection string
+// Use environment variable for MongoDB connection string, local maybe?
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/travel_planner';
 
 // Connect to MongoDB
@@ -24,17 +24,17 @@ const ItinerarySchema = new mongoose.Schema({
     activities: [{ name: String, duration: Number }],
 });
 
-// Define models
+// Define model
 let Location, Itinerary;
 
-// Check if the models already exist to avoid OverwriteModelError
-if (mongoose.models.Location) {
+// Check if the model already exist to avoid OverwriteModelError
+if (mongoose.model.Location) {
     Location = mongoose.model('Location');
 } else {
     Location = mongoose.model('Location', LocationSchema);
 }
 
-if (mongoose.models.Itinerary) {
+if (mongoose.model.Itinerary) {
     Itinerary = mongoose.model('Itinerary');
 } else {
     Itinerary = mongoose.model('Itinerary', ItinerarySchema);
