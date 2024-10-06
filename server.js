@@ -1,4 +1,6 @@
+//server.js
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const locationRoutes = require('./routes/location');
@@ -17,5 +19,6 @@ app.use('/locations', locationRoutes);
 app.use('/favorites', favoriteRoutes);
 app.use('/itineraries', itineraryRoutes);
 
-const port = process.env.PORT || 3000;
+const port = 4000;
+app.use(cors());
 app.listen(port, () => console.log(`Server running on port ${port}`));
