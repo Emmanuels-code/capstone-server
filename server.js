@@ -1,4 +1,3 @@
-//server.js
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -14,11 +13,13 @@ app.use(express.json());
 const mongoURI = process.env.MONGODB_URI;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+// Move CORS middleware here, before the routes
+app.use(cors());
+
 app.use('/auth', authRoutes);
 app.use('/locations', locationRoutes);
 app.use('/favorites', favoriteRoutes);
 app.use('/itineraries', itineraryRoutes);
 
 const port = 4000;
-app.use(cors());
 app.listen(port, () => console.log(`Server running on port ${port}`));

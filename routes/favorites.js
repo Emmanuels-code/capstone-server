@@ -1,3 +1,4 @@
+//routes/favorites.js
 const express = require('express');
 const Favorite = require('../model/Favorite');
 const authenticateToken = require('../middleware/auth');
@@ -18,6 +19,8 @@ router.post('/', authenticateToken, async (req, res) => {
         const favorite = new Favorite({
             userId: req.user.id,
             locationId: req.body.locationId,
+            spotId: req.body.spotId, // optional, if provided
+            thumbnailUrl: req.body.thumbnailUrl // thumbnail for either location or spot
         });
         await favorite.save();
         res.status(201).send('Favorite added');
@@ -25,5 +28,6 @@ router.post('/', authenticateToken, async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
 
 module.exports = router;

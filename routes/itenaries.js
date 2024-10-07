@@ -1,31 +1,35 @@
+// routes/itinerary.js
 const express = require('express');
-const Itinerary = require('../model/Itenary');
+const Itinerary = require('../model/Itenary.js');
 const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/:locationId', async (req, res) => {
+// Create a new itinerary for a user
+router.post('/', authenticateToken, async (req, res) => {
+    const { locationId, activities } = req.body;
+
     try {
-        const itinerary = await Itinerary.findOne({ locationId: req.params.locationId });
-        if (!itinerary) {
-            return res.status(404).send('Itinerary not found');
-        }
-        res.json(itinerary);
+        const newItinerary = new Itinerary({
+            userId: req.user.id, // Attach the user's ID from the token
+            locationId,
+            activities,
+        });
+
+        await newItinerary.save();
+        res.status(201).json(newItinerary);
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(400).send(error.message);
     }
 });
 
-router.put('/:locationId', authenticateToken, async (req, res) => {
+// Get all itineraries for the authenticated user
+router.get('/', authenticateToken, async (req, res) => {
     try {
-        const itinerary = await Itinerary.findOneAndUpdate(
-            { locationId: req.params.locationId },
-            { $set: { activities: req.body.activities } },
-            { new: true, upsert: true, runValidators: true }
-        );
-        res.json(itinerary);
+        const itineraries = await Itinerary.find({ userId: req.user.id }).populate('locationId');
+        res.json(itineraries);
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(500).send(error.message);
     }
 });
 
